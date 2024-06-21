@@ -10,7 +10,9 @@ Get information from the registry's website from an ID number.
 
 #### Example
 
-`https://example.com/lookup?id=000000000`
+```
+https://example.com/id_lookup?id=000000000
+```
 
 ```
 {

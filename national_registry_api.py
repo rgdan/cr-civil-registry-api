@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
-def parse_html_content(html_content):
+def parse_id_html_content(html_content):
     soup = BeautifulSoup(html_content, 'html.parser')
     data = {
         "id_number": soup.find("span", {"id": "lblcedula"}).text if soup.find("span", {"id": "lblcedula"}) else "N/A",
@@ -25,8 +25,8 @@ def parse_html_content(html_content):
 def home():
     return render_template('home.html')
 
-@app.route('/lookup', methods=['GET'])
-def lookup():
+@app.route('/id_lookup', methods=['GET'])
+def id_lookup():
     id_number = request.args.get('id')
     if not id_number:
         return jsonify({"error": "ID number is required"}), 400
@@ -42,12 +42,19 @@ def lookup():
         page.wait_for_timeout(1000)
 
         html_content = page.content()
-        data = parse_html_content(html_content)
+        data = parse_id_html_content(html_content)
 
         context.close()
         browser.close()
 
     return jsonify(data)
+
+@app.route('/name_lookup', methods=['GET'])
+def name_lookup():
+    first_name = request.args.get('first_name')
+    last_name1 = request.args.get('last_name1')
+    last_name2 = request.args.get('last_name2')
+    pass
 
 if __name__ == '__main__':
     app.run(debug=True)
